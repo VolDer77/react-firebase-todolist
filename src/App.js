@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { db } from "./firebase";
+import { AddTodo } from "./components/AddTodo";
+import { Todo } from "./components/Todo";
 
 function App() {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    db.collection("todos").onSnapshot((snapshot) =>
+      setTodos(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+    );
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="todo-list">
+      <div className="todo-list__header">
+        <h4>Todolist</h4>
+      </div>
+      <AddTodo />
+      <div className="todo-list__items">
+        {todos.map((todo) => (
+          <Todo key={todo.id} todo={todo} />
+        ))}
+      </div>
     </div>
   );
 }
