@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import checkIcon from "../assets/icons/check.svg";
 import { db } from "../firebase";
 
 export const Todo = ({ todo }) => {
-  const [completedState, setCompletedState] = useState(true);
-
   const onDelete = () => {
     if (window.confirm("Do u really want to delete this todo?", "")) {
       db.collection("todos").doc(todo.id).delete();
@@ -12,10 +10,9 @@ export const Todo = ({ todo }) => {
   };
 
   const onCheck = () => {
-    setCompletedState(!completedState);
     db.collection("todos").doc(todo.id).set(
       {
-        completed: completedState,
+        completed: !todo.completed,
       },
       { merge: true }
     );
