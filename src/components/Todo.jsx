@@ -21,7 +21,7 @@ export const Todo = ({ todo }) => {
   return (
     <div
       className={`todo-list__item ${
-        todo.completed ? "todo-list__item-completed" : ""
+        todo.completed && "todo-list__item-completed"
       }`}
     >
       <div onClick={onCheck} className="todo-list__item-check">
